@@ -76,6 +76,6 @@ if sidebar == "Efficient Frontier":
     
     #ef = get_efficentFrontierOPT("jsons/gbmForecast.json", percentage=60)
     st.write("gbmForecast.json")
-    fig, sharpe, vol = get_GraphefficentFrontier("jsons/gbmForecast.json", percentage=50)
+    fig, sharpe, vol = get_GraphefficentFrontier("jsons/gbmForecast.json", percentage=75)
     st.write(sharpe)
     st.pyplot(fig)

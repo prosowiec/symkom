@@ -8,9 +8,9 @@ from pypfopt import risk_models
 from pypfopt import expected_returns
 
 #https://colab.research.google.com/drive/1ulDSw7DEJH1SYRVwvtJXYU0naFgaaBiR
-def portfolio_annualised_performance(weights, mean_returns, cov_matrix):
-    returns = np.sum(mean_returns*weights )
-    std = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(1)
+def portfolio_performance(weights, mean_returns, cov_matrix):
+    returns = np.sum(mean_returns*weights) * 12
+    std = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(12)
     return std, returns
 
 def random_portfolios(num_portfolios, mean_returns, cov_matrix, risk_free_rate, table):
@@ -20,14 +20,14 @@ def random_portfolios(num_portfolios, mean_returns, cov_matrix, risk_free_rate, 
         weights = np.random.random(len(table.columns))
         weights /= np.sum(weights)
         weights_record.append(weights)
-        portfolio_std_dev, portfolio_return = portfolio_annualised_performance(weights, mean_returns, cov_matrix)
+        portfolio_std_dev, portfolio_return = portfolio_performance(weights, mean_returns, cov_matrix)
         results[0,i] = portfolio_std_dev
         results[1,i] = portfolio_return
         results[2,i] = (portfolio_return - risk_free_rate) / portfolio_std_dev
     return results, weights_record
 
 def neg_sharpe_ratio(weights, mean_returns, cov_matrix, risk_free_rate):
-    p_var, p_ret = portfolio_annualised_performance(weights, mean_returns, cov_matrix)
+    p_var, p_ret = portfolio_performance(weights, mean_returns, cov_matrix)
     return -(p_ret - risk_free_rate) / p_var
 
 def max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate):
@@ -41,7 +41,7 @@ def max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate):
     return result
 
 def portfolio_volatility(weights, mean_returns, cov_matrix):
-    return portfolio_annualised_performance(weights, mean_returns, cov_matrix)[0]
+    return portfolio_performance(weights, mean_returns, cov_matrix)[0]
 
 def min_variance(mean_returns, cov_matrix):
     num_assets = len(mean_returns)
@@ -60,7 +60,7 @@ def efficient_return(mean_returns, cov_matrix, target):
     args = (mean_returns, cov_matrix)
 
     def portfolio_return(weights):
-        return portfolio_annualised_performance(weights, mean_returns, cov_matrix)[1]
+        return portfolio_performance(weights, mean_returns, cov_matrix)[1]
 
     constraints = ({'type': 'eq', 'fun': lambda x: portfolio_return(x) - target},
                    {'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
@@ -79,13 +79,13 @@ def display_calculated_ef_with_random(mean_returns, cov_matrix, num_portfolios, 
     results, _ = random_portfolios(num_portfolios,mean_returns, cov_matrix, risk_free_rate, table)
     
     max_sharpe = max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate)
-    #sdp, rp = portfolio_annualised_performance(max_sharpe['x'], mean_returns, cov_matrix)
+    #sdp, rp = portfolio_performance(max_sharpe['x'], mean_returns, cov_matrix)
     max_sharpe_allocation = pd.DataFrame(max_sharpe.x,index=table.columns,columns=['weight'])
     max_sharpe_allocation.weight = [round(i*100,2)for i in max_sharpe_allocation.weight]
     max_sharpe_allocation = max_sharpe_allocation.T
     
     min_vol = min_variance(mean_returns, cov_matrix)
-    #sdp_min, rp_min = portfolio_annualised_performance(min_vol['x'], mean_returns, cov_matrix)
+    #sdp_min, rp_min = portfolio_performance(min_vol['x'], mean_returns, cov_matrix)
     min_vol_allocation = pd.DataFrame(min_vol.x,index=table.columns,columns=['weight'])
     min_vol_allocation.weight = [round(i*100,2)for i in min_vol_allocation.weight]
     min_vol_allocation = min_vol_allocation.T
@@ -140,7 +140,7 @@ def get_efficentFrontierOPT(forecastFilename, weightsFilename = "weights", perce
     return ef
 
 
-def get_GraphefficentFrontier(forecastFilename, weightsFilename = "weights", percentage = 50):
+def get_GraphefficentFrontier(forecastFilename, percentage = 50):
     if "json" in forecastFilename:
         df = make_ForecastDF(forecastFilename, percentage)
     else:
