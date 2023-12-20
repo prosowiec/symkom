@@ -68,14 +68,18 @@ if sidebar == "Universal Forecast":
         st.plotly_chart(fig)
         
 if sidebar == "Efficient Frontier":
-    #ef = get_efficentFrontierOPT("jsons/universalForecast.json", percentage=50)
-    st.write("universalForecast.json")
-    fig, sharpe, vol = get_GraphefficentFrontier("jsons/universalForecast.json", percentage=50)
+    percentage = st.select_slider("Select percentage case", [25, 50, 60, 75], value = 50)
+    st.header("Universal model simulation")
+    fig, sharpe, vol = get_GraphefficentFrontier("jsons/universalForecast.json", percentage=percentage)
     st.write(sharpe)
-    st.pyplot(fig)
     
-    #ef = get_efficentFrontierOPT("jsons/gbmForecast.json", percentage=60)
-    st.write("gbmForecast.json")
-    fig, sharpe, vol = get_GraphefficentFrontier("jsons/gbmForecast.json", percentage=75)
+    col1, col2, col3 = st.columns([1, 5, 1])
+    with col2:
+        st.pyplot(fig)
+    
+    st.header("Geometric Browanian Motion model simulation")
+    fig, sharpe, vol = get_GraphefficentFrontier("jsons/gbmForecast.json", percentage=percentage)
     st.write(sharpe)
-    st.pyplot(fig)
+    col11, col22, col33 = st.columns([1, 5, 1])
+    with col22:
+        st.pyplot(fig)

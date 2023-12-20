@@ -92,10 +92,10 @@ def unpackSimulation(ticker, prices, time, pricesDict):
         gbm25.append(np.round(np.percentile(prices[i, :], 25), 2))
         
     pricesDict[ticker] = {
-        "gbm25" : gbm25,
-        "gbm50": gbm50,
-        "gbm60" : gbm60,
-        "gbm75" : gbm75,
+        "25%" : gbm25,
+        "50%": gbm50,
+        "60%" : gbm60,
+        "75%" : gbm75,
         "time" : np.round(time, 2).tolist(),
     }
     

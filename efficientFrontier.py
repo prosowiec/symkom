@@ -90,7 +90,7 @@ def display_calculated_ef_with_random(mean_returns, cov_matrix, num_portfolios, 
     min_vol_allocation.weight = [round(i*100,2)for i in min_vol_allocation.weight]
     min_vol_allocation = min_vol_allocation.T
     
-    fig = plt.figure(figsize=(8, 5))
+    fig, ax = plt.subplots(figsize=(8, 5))
     plt.scatter(results[0,:],results[1,:],c=results[2,:], cmap='viridis', marker='o', s=8, alpha=1)
     plt.colorbar()
     plt.title('Calculated Portfolio Optimization based on Efficient Frontier')
@@ -119,10 +119,10 @@ def make_ForecastDF(forecastFilename, percentage):
         if ticker == "years" or ticker == "simNum":
             continue
         if i == 0:
-            df = pd.DataFrame.from_dict(data[ticker][f"gbm{percentage}"])
+            df = pd.DataFrame.from_dict(data[ticker][f"{percentage}%"])
             df.rename(columns = {0:ticker}, inplace = True)
         else:
-            tempdf = pd.DataFrame.from_dict(data[ticker]["gbm50"])
+            tempdf = pd.DataFrame.from_dict(data[ticker][f"{percentage}%"])
             tempdf.rename(columns = {0:ticker}, inplace = True)
             df = pd.concat([df, tempdf], axis=1)
         i +=1
@@ -149,7 +149,7 @@ def get_GraphefficentFrontier(forecastFilename, percentage = 50):
     returns = df.pct_change() 
     mean_returns = returns.mean()
     cov_matrix = returns.cov()
-    num_portfolios = 5000
+    num_portfolios = 10000
     risk_free_rate = 0
     fig, sharpe, vol = display_calculated_ef_with_random(mean_returns, cov_matrix, num_portfolios, risk_free_rate, df)
     return fig, sharpe, vol
