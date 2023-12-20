@@ -19,6 +19,10 @@ This Python-based project combines probabilistic company valuation, time series 
 <img src="images/streamlit.png">
 </p>
 
+<p align="center">
+<img src="images/simviz.gif" alt="Video GIF" width="800" height="450">
+</p>
+
 ### 2. Simulation Models Integration
 
 - **Objective:** Enhance the probabilistic valuation by integrating two simulation models - a proprietary one based on company valuation distributions and a Geometric Brownian Motion (GBM) model.
@@ -29,6 +33,14 @@ This Python-based project combines probabilistic company valuation, time series 
   - Methodology
   - Expected Outcomes
 
+<p align="center">
+<img src="images/universal.gif" alt="Video GIF" width="800" height="450">
+</p>
+
+<p align="center">
+<img src="images/gbm.gif" alt="Video GIF" width="800" height="450">
+</p>
+
 ### 3. Portfolio Optimization with Efficient Frontier Analysis
 
 - **Objective:** Construct optimal portfolios by incorporating insights from probabilistic valuation, simulation models, and Efficient Frontier analysis.
@@ -36,6 +48,10 @@ This Python-based project combines probabilistic company valuation, time series 
 - **Key Components:**
   - Efficient Frontier Analysis
   - Optimal Portfolio Construction
+
+<p align="center">
+<img src="images/ef.gif" alt="Video GIF" width="800" height="450">
+</p>
 
 ## Getting Started
 
